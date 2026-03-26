@@ -10,7 +10,7 @@ const db=firebase.firestore();
 let currentTab="ranking";
 let lastTime=0;
 
-// 🔐 ADMIN
+// ADMIN
 const A="MzAxOTE1MzE=";
 let isAdmin=false;
 
@@ -40,6 +40,10 @@ function getOwner(){
 
 // MODAL
 function openModal(){
+  if(currentTab==="info" || currentTab==="fama"){
+    alert("No puedes publicar aquí");
+    return;
+  }
   document.getElementById("modal").classList.remove("hidden");
 }
 
@@ -69,13 +73,6 @@ async function addMessage(){
   if(Date.now()-lastTime<4000){
     alert("Espera unos segundos");
     return;
-  }
-
-  // comandos
-  if(text.startsWith("/")){
-    let cmd=text.split(" ");
-    if(cmd[0]==="/delete" && isAdmin){ deleteMessage(cmd[1]); return; }
-    if(cmd[0]==="/pin" && isAdmin){ togglePin(cmd[1]); return; }
   }
 
   await db.collection("mensajes").add({
@@ -114,13 +111,6 @@ async function deleteMessage(id){
   await db.collection("mensajes").doc(id).delete();
 }
 
-// PIN
-async function togglePin(id){
-  let ref=db.collection("mensajes").doc(id);
-  let doc=await ref.get();
-  await ref.update({pinned:!doc.data().pinned});
-}
-
 // TAB
 function switchTab(tab){
   currentTab=tab;
@@ -141,6 +131,27 @@ function render(){
 
     arr=arr.filter(m=>m.text.toLowerCase().includes(search));
 
+    // INFO
+    if(currentTab==="info"){
+      c.innerHTML=`<div class="info-box">Canal informativo. Solo lectura.</div>`;
+      return;
+    }
+
+    // SALÓN DE LA FAMA
+    if(currentTab==="fama"){
+      let hoy=Date.now()-86400000;
+      let semana=Date.now()-604800000;
+
+      let topDia=arr.filter(m=>m.timestamp>hoy).sort((a,b)=>score(b)-score(a)).slice(0,6);
+      let topSemana=arr.filter(m=>m.timestamp>semana).sort((a,b)=>score(b)-score(a)).slice(0,6);
+      let topGlobal=arr.sort((a,b)=>score(b)-score(a)).slice(0,6);
+
+      c.innerHTML+=crearSeccion("🔥 Hoy",topDia);
+      c.innerHTML+=crearSeccion("🏆 Semana",topSemana);
+      c.innerHTML+=crearSeccion("💎 Historia",topGlobal);
+      return;
+    }
+
     if(currentTab!=="ranking"){
       arr=arr.filter(m=>m.categoria===currentTab);
     }
@@ -151,27 +162,40 @@ function render(){
   });
 }
 
+// CREAR SECCIÓN SALÓN
+function crearSeccion(titulo,data){
+  let html=`<div class="fame-section"><div class="fame-title">${titulo}</div><div class="fame-grid">`;
+
+  data.forEach((m,i)=>{
+    html+=`
+      <div class="fame-card ${i===0?"fame-top":""}">
+        ${i===0?"👑":""}
+        <div>${m.text}</div>
+        <div>❤️ ${m.likes}</div>
+      </div>
+    `;
+  });
+
+  html+="</div></div>";
+  return html;
+}
+
 // UI MENSAJE
 function createMessage(m){
   let div=document.createElement("div");
 
-  let owner=getOwner();
-  let isOwner=m.user===owner;
-  let verified=m.likes>5;
+  let isOwner=m.user===getOwner();
 
   div.className="message "+(isOwner?"owner":"");
 
   div.innerHTML=`
     ${isOwner?`<span class="owner-name">👑 Owner</span>`:""}
-    ${verified?`<span class="verified"> ✔</span>`:""}
     <br>${m.text}
     <br><small>${timeAgo(m.timestamp)}</small>
     <br>❤️ ${m.likes}
-
     <br>
     <button onclick="like('${m.id}')">❤️</button>
     ${(m.user===getUserId()||isAdmin)?`<button onclick="deleteMessage('${m.id}')">🗑️</button>`:""}
-    ${isAdmin?`<button onclick="togglePin('${m.id}')">📌</button>`:""}
   `;
 
   document.getElementById("content").appendChild(div);
