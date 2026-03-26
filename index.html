@@ -9,29 +9,41 @@
 
 <body>
 
-<header>
-  <div class="logo">🕶️ Whispr</div>
-</header>
+<!-- 🔥 TERMS -->
+<div id="terms" class="terms">
+  <div class="terms-box">
+    <h2>🕶️ Whispr</h2>
+    <p>Plataforma anónima para compartir pensamientos.</p>
+    <ul>
+      <li>No compartir datos personales</li>
+      <li>Uso solo para entretenimiento</li>
+      <li>Contenido puede ser moderado</li>
+    </ul>
+    <button onclick="acceptTerms()">Aceptar y continuar</button>
+  </div>
+</div>
+
+<header>🕶️ Whispr</header>
 
 <div onclick="activarAdmin()" class="admin-btn">⚙</div>
 
 <div class="tabs">
   <div class="tab active" onclick="switchTab('ranking')">🔥 Tendencias</div>
-  <div class="tab" onclick="switchTab('profes')">🏫 Profes</div>
-  <div class="tab" onclick="switchTab('quemados')">😈 Expuestos</div>
-  <div class="tab" onclick="switchTab('alumnos')">👥 Comunidad</div>
-  <div class="tab" onclick="switchTab('chats')">💬 General</div>
+  <div class="tab" onclick="switchTab('general')">💬 General</div>
+  <div class="tab" onclick="switchTab('fama')">🏆 Salón</div>
+  <div class="tab" onclick="switchTab('info')">ℹ️ Info</div>
 </div>
 
-<div class="container">
-  <input type="text" id="searchInput" placeholder="Buscar..." oninput="render()">
-  <div id="content"></div>
+<div class="search-bar">
+  <input id="searchInput" placeholder="Buscar..." oninput="render()">
 </div>
+
+<div id="content"></div>
 
 <button class="fab" onclick="openModal()">＋</button>
 
 <div id="modal" class="modal hidden">
-  <div class="modal-content">
+  <div class="modal-box">
     <textarea id="newMsg" placeholder="¿Qué quieres decir?"></textarea>
     <button onclick="addMessage()">Publicar</button>
     <button onclick="closeModal()">Cancelar</button>
@@ -40,7 +52,6 @@
 
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-
 <script src="app.js"></script>
 
 </body>
