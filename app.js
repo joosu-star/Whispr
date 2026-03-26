@@ -1,8 +1,11 @@
-// 🔥 CONFIGURA FIREBASE
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_DOMINIO",
-  projectId: "TU_PROJECT_ID",
+  apiKey: "AIzaSyAh7d5vljRjEaF7gCGDEmpI2D270_RFFEA",
+  authDomain: "icg-slp.firebaseapp.com",
+  projectId: "icg-slp",
+  storageBucket: "icg-slp.firebasestorage.app",
+  messagingSenderId: "375461722998",
+  appId: "1:375461722998:web:8c9775c42eaff97bec9857",
+  measurementId: "G-623TZQE62V"
 };
 
 firebase.initializeApp(firebaseConfig);
