@@ -9,33 +9,41 @@
 
 <body>
 
-<header>ICG</header>
+<header>
+  <div class="logo">🕶️ Whispr</div>
+</header>
 
-<!-- BOTÓN ADMIN OCULTO -->
 <div onclick="activarAdmin()" class="admin-btn">⚙</div>
 
 <div class="tabs">
-  <div class="tab active" onclick="switchTab('ranking')">Ranking</div>
-  <div class="tab" onclick="switchTab('profes')">Profes</div>
-  <div class="tab" onclick="switchTab('quemados')">Quemados</div>
-  <div class="tab" onclick="switchTab('alumnos')">Alumnos</div>
-  <div class="tab" onclick="switchTab('chats')">Chats</div>
-  <div class="tab" onclick="switchTab('autores')">Autores</div>
+  <div class="tab active" onclick="switchTab('ranking')">🔥 Tendencias</div>
+  <div class="tab" onclick="switchTab('profes')">🏫 Profes</div>
+  <div class="tab" onclick="switchTab('quemados')">😈 Expuestos</div>
+  <div class="tab" onclick="switchTab('alumnos')">👥 Comunidad</div>
+  <div class="tab" onclick="switchTab('chats')">💬 General</div>
+  <div class="tab" onclick="switchTab('autores')">ℹ️ Info</div>
 </div>
 
 <div class="container">
-
 <input type="text" id="searchInput" placeholder="Buscar..." oninput="render()">
-
 <div id="content"></div>
-
 </div>
 
-<!-- 🔥 FIREBASE (MUY IMPORTANTE ESTE ORDEN) -->
+<!-- BOTÓN FLOTANTE -->
+<button class="fab" onclick="openModal()">＋</button>
+
+<!-- MODAL -->
+<div id="modal" class="modal hidden">
+  <div class="modal-content">
+    <textarea id="newMsg" placeholder="¿Qué quieres decir?"></textarea>
+    <button onclick="addMessage()">Publicar</button>
+    <button onclick="closeModal()">Cancelar</button>
+  </div>
+</div>
+
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-<!-- TU APP -->
 <script src="app.js"></script>
 
 </body>
