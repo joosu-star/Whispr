@@ -15,6 +15,13 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
+.admin-btn {
+  position: fixed;
+  top: 5px;
+  right: 10px;
+  opacity: 0.1;
+}
+
 .tabs {
   display: flex;
   overflow-x: auto;
@@ -46,10 +53,30 @@ body {
   border: 1px solid #222;
 }
 
+.owner {
+  border: 2px solid #00c3ff;
+  background: #0f1a22;
+}
+
+.owner-name {
+  color: #00c3ff;
+  font-weight: bold;
+}
+
+.verified {
+  color: #00ffcc;
+  font-weight: bold;
+}
+
 .actions {
   display: flex;
   gap: 10px;
   margin-top: 10px;
+}
+
+.reply {
+  font-size: 13px;
+  opacity: 0.8;
 }
 
 .reply-box {
@@ -65,12 +92,6 @@ body {
   border: none;
   background: #222;
   color: white;
-}
-
-.reply-box button {
-  background: #00c3ff;
-  border: none;
-  border-radius: 8px;
 }
 
 .fab {
