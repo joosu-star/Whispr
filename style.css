@@ -5,19 +5,20 @@ body{
   color:white;
 }
 
-/* HEADER */
 header{
   text-align:center;
   padding:15px;
   font-size:20px;
-  font-weight:bold;
   background:#0d0d0d;
-  position:sticky;
-  top:0;
-  z-index:10;
 }
 
-/* TABS */
+.admin-btn{
+  position:fixed;
+  top:5px;
+  right:10px;
+  opacity:0.1;
+}
+
 .tabs{
   display:flex;
   justify-content:center;
@@ -30,14 +31,12 @@ header{
   border-radius:20px;
   background:#1a1a1a;
   cursor:pointer;
-  transition:.25s;
 }
 
 .active{
-  background:linear-gradient(45deg,#6a00ff,#a200ff);
+  background:#6a00ff;
 }
 
-/* SEARCH */
 .search-bar{
   padding:10px;
 }
@@ -51,13 +50,11 @@ header{
   color:white;
 }
 
-/* MENSAJES */
 .message{
   margin:12px;
   padding:15px;
   background:#141414;
   border-radius:15px;
-  animation:fadeUp .3s;
 }
 
 .owner{
@@ -68,43 +65,6 @@ header{
   color:#00c3ff;
 }
 
-.verified{
-  color:#00ffcc;
-}
-
-/* SALÓN DE LA FAMA */
-.fame-section{
-  padding:10px;
-}
-
-.fame-title{
-  font-size:18px;
-  margin:10px;
-}
-
-.fame-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
-  gap:10px;
-}
-
-.fame-card{
-  background:#111;
-  border-radius:15px;
-  padding:10px;
-  text-align:center;
-  transition:.2s;
-}
-
-.fame-card:hover{
-  transform:scale(1.05);
-}
-
-.fame-top{
-  border:2px solid gold;
-}
-
-/* FAB */
 .fab{
   position:fixed;
   bottom:20px;
@@ -118,7 +78,6 @@ header{
   font-size:26px;
 }
 
-/* MODAL */
 .modal{
   position:fixed;
   inset:0;
@@ -148,7 +107,6 @@ textarea{
   padding:10px;
 }
 
-/* INFO */
 .info-box{
   margin:15px;
   padding:15px;
@@ -156,7 +114,29 @@ textarea{
   border-radius:15px;
 }
 
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(20px)}
-  to{opacity:1;transform:translateY(0)}
+/* SALON */
+.fame-section{
+  padding:10px;
+}
+
+.fame-title{
+  font-size:18px;
+  margin:10px;
+}
+
+.fame-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(150px,1fr));
+  gap:10px;
+}
+
+.fame-card{
+  background:#111;
+  border-radius:15px;
+  padding:10px;
+  text-align:center;
+}
+
+.fame-top{
+  border:2px solid gold;
 }
