@@ -3,7 +3,7 @@ body{
   font-family:'Segoe UI', sans-serif;
   background:linear-gradient(180deg,#0a0a0a,#050505);
   color:white;
-  transition: background 1.5s ease;
+  transition: background 1s;
 }
 
 header{
@@ -18,7 +18,6 @@ header{
   top:5px;
   right:10px;
   opacity:0.1;
-  cursor:pointer;
 }
 
 .tabs{
@@ -33,28 +32,24 @@ header{
   border-radius:20px;
   background:#1a1a1a;
   cursor:pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s;
 }
 
 .tab.active{
-  border: 3px solid transparent;
-  animation: waveBorder 3s infinite;
-}
-
-@keyframes waveBorder {
-  0% { border-color: rgba(0,0,0,0); }
-  50% { border-color: currentColor; }
-  100% { border-color: rgba(0,0,0,0); }
+  font-weight:bold;
+  border:2px solid;
 }
 
 .channels-dropdown{
-  overflow:hidden;
-  max-height:0;
-  transition:max-height 0.3s ease, opacity 0.3s ease;
-  opacity:0;
   display:flex;
   flex-direction:column;
-  align-items:center;
+  background:#111;
+  margin:0 20px;
+  border-radius:10px;
+  overflow:hidden;
+  max-height:0;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+  opacity:0;
 }
 
 .channels-dropdown.show{
@@ -63,14 +58,9 @@ header{
 }
 
 .channel-item{
-  width:90%;
   padding:10px;
-  margin:3px 0;
-  background:#111;
-  border-radius:15px;
-  text-align:center;
   cursor:pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s;
 }
 
 .channel-item:hover{
@@ -90,19 +80,12 @@ header{
   color:white;
 }
 
-.current-channel{
-  text-align:center;
-  padding:8px 0;
-  font-weight:bold;
-  transition: color 1.2s ease;
-}
-
 .message{
   margin:12px;
   padding:15px;
   background:#141414;
   border-radius:15px;
-  transition: border 1.5s ease;
+  transition: border 1.5s;
 }
 
 .owner{
@@ -162,6 +145,13 @@ textarea{
   border-radius:15px;
 }
 
+.current-channel-name{
+  text-align:center;
+  margin:5px 0;
+  font-size:16px;
+  font-weight:bold;
+}
+
 /* SALON */
 .fame-section{
   padding:10px;
@@ -189,8 +179,9 @@ textarea{
   border:2px solid gold;
 }
 
-/* COLORES POR CANAL */
-.general-color{ color:#00c0ff; border-color:#00c0ff; }
-.profesores-color{ color:#00ff80; border-color:#00ff80; }
-.experiencias-color{ color:#aa00ff; border-color:#aa00ff; }
-.quejas-color{ color:#ff4040; border-color:#ff4040; }
+/* ANIMACIÓN OLEAJE BORDES */
+@keyframes waveBorder {
+  0% { border-color: rgba(0,0,0,0.1);}
+  50% { border-color: currentColor; }
+  100% { border-color: rgba(0,0,0,0.1);}
+}
