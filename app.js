@@ -9,13 +9,12 @@ const db=firebase.firestore();
 
 let currentTab="general";
 let lastTime=0;
+let isAdmin=false;
 
 // ADMIN
 const A="MzAxOTE1MzE=";
-let isAdmin=false;
-
 function activarAdmin(){
-  let p=prompt("...");
+  let p=prompt("Ingresa código");
   if(p===atob(A)){
     isAdmin=true;
     localStorage.setItem("owner",getUserId());
@@ -34,9 +33,7 @@ function getUserId(){
   return id;
 }
 
-function getOwner(){
-  return localStorage.getItem("owner");
-}
+function getOwner(){ return localStorage.getItem("owner"); }
 
 // MODAL
 function openModal(){
@@ -44,20 +41,9 @@ function openModal(){
     alert("No puedes publicar aquí");
     return;
   }
-  let placeholder="";
-  switch(currentTab){
-    case "general": placeholder="¿Qué quieres decir?"; break;
-    case "profesores": placeholder="Opina sobre un profesor..."; break;
-    case "experiencias": placeholder="Cuenta tu experiencia..."; break;
-    case "quejas": placeholder="Describe la situación..."; break;
-  }
-  document.getElementById("newMsg").placeholder=placeholder;
   document.getElementById("modal").classList.remove("hidden");
 }
-
-function closeModal(){
-  document.getElementById("modal").classList.add("hidden");
-}
+function closeModal(){ document.getElementById("modal").classList.add("hidden"); }
 
 // TIEMPO
 function timeAgo(t){
@@ -69,19 +55,13 @@ function timeAgo(t){
 }
 
 // SCORE
-function score(m){
-  return (m.likes||0)+(m.pinned?1000:0);
-}
+function score(m){ return (m.likes||0)+(m.pinned?1000:0); }
 
 // ADD
 async function addMessage(){
   let text=document.getElementById("newMsg").value.trim();
-  if(!text)return;
-
-  if(Date.now()-lastTime<4000){
-    alert("Espera unos segundos");
-    return;
-  }
+  if(!text) return;
+  if(Date.now()-lastTime<4000){ alert("Espera unos segundos"); return; }
 
   await db.collection("mensajes").add({
     text,
@@ -104,9 +84,7 @@ async function like(id){
   let doc=await ref.get();
   let data=doc.data();
   let user=getUserId();
-
   if(data.likedBy?.includes(user)) return;
-
   await ref.update({
     likes:(data.likes||0)+1,
     likedBy:[...(data.likedBy||[]),user]
@@ -114,44 +92,45 @@ async function like(id){
 }
 
 // DELETE
-async function deleteMessage(id){
-  await db.collection("mensajes").doc(id).delete();
+async function deleteMessage(id){ await db.collection("mensajes").doc(id).delete(); }
+
+// CHANNELS DROPDOWN
+function toggleChannels(){
+  let dropdown=document.getElementById("channels-dropdown");
+  dropdown.classList.toggle("show");
 }
 
-// TABS
+// SWITCH TAB
 function switchTab(tab){
   currentTab=tab;
   document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-  if(tab==="ranking") document.getElementById("tab-trending").classList.add("active");
-  if(tab==="fama") document.querySelectorAll(".tab")[2].classList.add("active");
-  if(tab==="info") document.querySelectorAll(".tab")[3].classList.add("active");
-  render();
-}
+  // Color del borde y nombre del tab principal
+  let mainTab;
+  if(tab==="trending") mainTab=document.getElementById("tab-trending");
+  else if(["general","profesores","experiencias","quejas"].includes(tab)) mainTab=document.getElementById("tab-channels");
+  else if(tab==="fama") mainTab=document.getElementById("tab-fame");
+  else if(tab==="info") mainTab=document.getElementById("tab-info");
+  if(mainTab) mainTab.classList.add("active");
 
-// CANALES
-function toggleChannels(){
-  document.getElementById("channels-dropdown").classList.toggle("show");
-}
-
-function selectChannel(tab){
-  currentTab=tab;
+  // Cerrar dropdown
   document.getElementById("channels-dropdown").classList.remove("show");
 
-  // Actualizar highlight de tab principal
-  document.getElementById("tab-channels").classList.add("active");
-  document.getElementById("tab-trending").classList.remove("active");
-  document.querySelectorAll(".tab")[2].classList.remove("active"); // Salón
-  document.querySelectorAll(".tab")[3].classList.remove("active"); // Info
+  // Actualizar texto y color canal
+  const display=document.getElementById("current-channel");
+  let colorClass="";
+  let icon="";
+  switch(tab){
+    case "general": colorClass="general-color"; icon="💬"; break;
+    case "profesores": colorClass="profesores-color"; icon="👨‍🏫"; break;
+    case "experiencias": colorClass="experiencias-color"; icon="🧠"; break;
+    case "quejas": colorClass="quejas-color"; icon="⚠️"; break;
+    case "trending": colorClass=""; icon="🔥"; break;
+    case "fama": colorClass=""; icon="🏆"; break;
+    case "info": colorClass=""; icon="ℹ️"; break;
+  }
+  display.textContent=`${icon} Canal activo: ${tab.charAt(0).toUpperCase() + tab.slice(1)}`;
+  display.className="current-channel "+colorClass;
 
-  // Oleaje en bordes y nombre canal
-  document.body.classList.remove("channel-general","channel-profesores","channel-experiencias","channel-quejas");
-  let channelName="General";
-  if(tab==="general") { document.body.classList.add("channel-general"); channelName="General"; }
-  if(tab==="profesores") { document.body.classList.add("channel-profesores"); channelName="Profesores"; }
-  if(tab==="experiencias") { document.body.classList.add("channel-experiencias"); channelName="Experiencias"; }
-  if(tab==="quejas") { document.body.classList.add("channel-quejas"); channelName="Quejas"; }
-
-  document.getElementById("current-channel").innerText = "Canal: " + channelName;
   render();
 }
 
@@ -159,7 +138,6 @@ function selectChannel(tab){
 function render(){
   let c=document.getElementById("content");
   let search=document.getElementById("searchInput").value.toLowerCase();
-
   db.collection("mensajes").onSnapshot(snap=>{
     c.innerHTML="";
     let arr=[];
@@ -167,23 +145,8 @@ function render(){
 
     arr=arr.filter(m=>m.text.toLowerCase().includes(search));
 
-    // INFO
-    if(currentTab==="info"){
-      c.innerHTML=`<div class="info-box">
-        🕶️ Whispr<br><br>
-        Plataforma digital enfocada en la expresión anónima dentro de comunidades.<br><br>
-        🎯 <b>Misión</b><br>
-        Permitir que las personas compartan experiencias, opiniones y situaciones sin miedo.<br><br>
-        🔒 <b>Privacidad</b><br>
-        No almacenamos identidad real. Sistema completamente anónimo.<br><br>
-        ⚖️ <b>Normas</b><br>
-        No amenazas reales. No datos personales. No contenido ilegal.<br><br>
-        📌 Nota: Whispr es una plataforma independiente creada con fines sociales y de expresión.
-      </div>`;
-      return;
-    }
+    if(currentTab==="info"){ c.innerHTML=`<div class="info-box">🕶️ Whispr\nPlataforma digital anónima.\n🎯 Misión: expresión libre.\n🔒 Privacidad garantizada.\n⚖️ Normas de uso.\n📌 Nota: app independiente.</div>`; return; }
 
-    // SALON
     if(currentTab==="fama"){
       let hoy=Date.now()-86400000;
       let semana=Date.now()-604800000;
@@ -198,34 +161,38 @@ function render(){
       return;
     }
 
-    if(currentTab!=="ranking"){
+    if(!["trending","fama","info"].includes(currentTab)){
       arr=arr.filter(m=>m.categoria===currentTab);
     }
 
-    arr.sort((a,b)=>score(b)-score(a));
+    if(currentTab==="trending") arr.sort((a,b)=>score(b)-score(a));
+    else arr.sort((a,b)=>b.timestamp-a.timestamp);
+
     arr.forEach(createMessage);
   });
 }
 
 // SALON
 function crearSeccion(titulo,data){
-  if(data.length===0){
-    return `<div class="info-box">Sin mensajes aún</div>`;
-  }
-
+  if(data.length===0){ return `<div class="info-box">Sin mensajes aún</div>`; }
   let html=`<div class="fame-section"><div class="fame-title">${titulo}</div><div class="fame-grid">`;
-
   data.forEach((m,i)=>{
+    let colorClass="";
+    switch(m.categoria){
+      case "general": colorClass="general-color"; break;
+      case "profesores": colorClass="profesores-color"; break;
+      case "experiencias": colorClass="experiencias-color"; break;
+      case "quejas": colorClass="quejas-color"; break;
+    }
     html+=`
-      <div class="fame-card ${i===0?"fame-top":""}">
+      <div class="fame-card ${i===0?"fame-top":""} ${colorClass}">
         ${i===0?"👑":""}
         <div>${m.text}</div>
-        <div>${m.categoria ? m.categoria.toUpperCase() : ''}</div>
         <div>❤️ ${m.likes}</div>
+        <div>${m.categoria}</div>
       </div>
     `;
   });
-
   html+="</div></div>";
   return html;
 }
@@ -234,31 +201,39 @@ function crearSeccion(titulo,data){
 function createMessage(m){
   let div=document.createElement("div");
   let isOwner=m.user===getOwner();
-
   div.className="message "+(isOwner?"owner":"");
 
-  // COLOR DEL BADGE
-  let color="", icon="";
+  let colorClass="";
   switch(m.categoria){
-    case "general": color="#007bff"; icon="💬"; break;
-    case "profesores": color="#28a745"; icon="👨‍🏫"; break;
-    case "experiencias": color="#6f42c1"; icon="🧠"; break;
-    case "quejas": color="#dc3545"; icon="⚠️"; break;
-    default: color="#888"; icon="";
+    case "general": colorClass="general-color"; break;
+    case "profesores": colorClass="profesores-color"; break;
+    case "experiencias": colorClass="experiencias-color"; break;
+    case "quejas": colorClass="quejas-color"; break;
   }
 
   div.innerHTML=`
-    ${isOwner?`<span class="owner-name">👑 Owner</span><br>`:""}
-    <div>${m.text}</div>
-    <div style="color:${color}; font-weight:bold;">${icon} ${m.categoria ? m.categoria.toUpperCase() : ''}</div>
-    <small>${timeAgo(m.timestamp)}</small>
+    ${isOwner?`<span class="owner-name">👑 Owner</span>`:""}
+    <br>${m.text}
+    <br><small>${timeAgo(m.timestamp)}</small>
+    <br>${m.categoria!=="trending"?`<span class="${colorClass}">${m.categoria}</span>`:""}
     <br>❤️ ${m.likes}
     <br>
     <button onclick="like('${m.id}')">❤️</button>
     ${(m.user===getUserId()||isAdmin)?`<button onclick="deleteMessage('${m.id}')">🗑️</button>`:""}
   `;
-
   document.getElementById("content").appendChild(div);
+
+  // Bordes con oleaje según canal
+  if(["general","profesores","experiencias","quejas"].includes(m.categoria)){
+    div.style.border="2px solid";
+    switch(m.categoria){
+      case "general": div.style.borderColor="#00c0ff"; break;
+      case "profesores": div.style.borderColor="#00ff80"; break;
+      case "experiencias": div.style.borderColor="#aa00ff"; break;
+      case "quejas": div.style.borderColor="#ff4040"; break;
+    }
+    div.style.animation="waveBorder 3s infinite";
+  }
 }
 
 render();
