@@ -14,18 +14,23 @@
 <div onclick="activarAdmin()" class="admin-btn">⚙</div>
 
 <div class="tabs">
-  <div class="tab active" id="tab-trending" onclick="switchTab('ranking')">🔥 Tendencias</div>
-  <div class="tab" id="tab-channels" onclick="toggleChannels()">📂 Canales ⬇</div>
-  <div class="tab" id="tab-fame" onclick="switchTab('fama')">🏆 Salón</div>
-  <div class="tab" id="tab-info" onclick="switchTab('info')">ℹ️ Info</div>
+  <div id="tab-trending" class="tab active" onclick="switchTab('ranking')">🔥 Tendencias</div>
+  <div id="tab-channels" class="tab" onclick="toggleChannels()">📂 Canales ⬇</div>
+  <div class="tab" onclick="switchTab('fama')">🏆 Salón</div>
+  <div class="tab" onclick="switchTab('info')">ℹ️ Info</div>
 </div>
 
-<!-- Dropdown canales -->
-<div id="channels-dropdown" class="channels-dropdown hidden">
-  <div class="channel-btn" data-tab="general" onclick="selectChannel('general')">💬 General</div>
-  <div class="channel-btn" data-tab="profesores" onclick="selectChannel('profesores')">👨‍🏫 Profesores</div>
-  <div class="channel-btn" data-tab="experiencias" onclick="selectChannel('experiencias')">🧠 Experiencias</div>
-  <div class="channel-btn" data-tab="quejas" onclick="selectChannel('quejas')">⚠️ Quejas</div>
+<!-- Dropdown de canales -->
+<div id="channels-dropdown" class="channels-dropdown">
+  <div onclick="selectChannel('general')">💬 General</div>
+  <div onclick="selectChannel('profesores')">👨‍🏫 Profesores</div>
+  <div onclick="selectChannel('experiencias')">🧠 Experiencias</div>
+  <div onclick="selectChannel('quejas')">⚠️ Quejas</div>
+</div>
+
+<!-- Texto flotante del canal -->
+<div id="current-channel">
+  Canal: General
 </div>
 
 <div class="search-bar">
