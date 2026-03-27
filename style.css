@@ -11,6 +11,7 @@ header{
   padding:15px;
   font-size:20px;
   background:#0d0d0d;
+  transition: color 1s;
 }
 
 .admin-btn{
@@ -18,6 +19,7 @@ header{
   top:5px;
   right:10px;
   opacity:0.1;
+  cursor:pointer;
 }
 
 .tabs{
@@ -32,35 +34,30 @@ header{
   border-radius:20px;
   background:#1a1a1a;
   cursor:pointer;
-  transition: all 0.3s;
+  transition: background 0.3s, color 0.3s;
 }
 
 .tab.active{
-  font-weight:bold;
-  border:2px solid;
+  background:#6a00ff;
 }
 
 .channels-dropdown{
   display:flex;
   flex-direction:column;
-  background:#111;
-  margin:0 20px;
-  border-radius:10px;
-  overflow:hidden;
-  max-height:0;
-  transition: max-height 0.3s ease, opacity 0.3s ease;
-  opacity:0;
+  gap:5px;
+  padding:5px 10px;
 }
 
-.channels-dropdown.show{
-  max-height:500px;
-  opacity:1;
+.channels-dropdown.hidden{
+  display:none;
 }
 
 .channel-item{
-  padding:10px;
+  padding:8px 12px;
+  border-radius:15px;
+  background:#111;
   cursor:pointer;
-  transition: background 0.3s;
+  transition: background 0.3s, color 0.3s;
 }
 
 .channel-item:hover{
@@ -85,7 +82,8 @@ header{
   padding:15px;
   background:#141414;
   border-radius:15px;
-  transition: border 1.5s;
+  border:3px solid transparent;
+  animation: wavePulse 3s infinite;
 }
 
 .owner{
@@ -145,14 +143,6 @@ textarea{
   border-radius:15px;
 }
 
-.current-channel-name{
-  text-align:center;
-  margin:5px 0;
-  font-size:16px;
-  font-weight:bold;
-}
-
-/* SALON */
 .fame-section{
   padding:10px;
 }
@@ -179,9 +169,20 @@ textarea{
   border:2px solid gold;
 }
 
-/* ANIMACIÓN OLEAJE BORDES */
-@keyframes waveBorder {
-  0% { border-color: rgba(0,0,0,0.1);}
-  50% { border-color: currentColor; }
-  100% { border-color: rgba(0,0,0,0.1);}
+/* label canal */
+.channel-label{
+  text-align:center;
+  font-size:16px;
+  margin:5px;
+  font-weight:bold;
+  transition: color 1s;
+}
+
+/* ANIMACION OLEAJE */
+@keyframes wavePulse {
+  0% { box-shadow: 0 0 0 0 currentColor, 0 0 0 0 currentColor; }
+  25% { box-shadow: 3px -3px 0 0 currentColor, -3px 3px 0 0 currentColor; }
+  50% { box-shadow: 0 0 0 0 currentColor, 0 0 0 0 currentColor; }
+  75% { box-shadow: -3px 3px 0 0 currentColor, 3px -3px 0 0 currentColor; }
+  100% { box-shadow: 0 0 0 0 currentColor, 0 0 0 0 currentColor; }
 }
