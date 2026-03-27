@@ -8,6 +8,7 @@ firebase.initializeApp(firebaseConfig);
 const db=firebase.firestore();
 
 let currentTab="ranking";
+let currentChannel="general";
 let lastTime=0;
 
 // ADMIN
@@ -15,7 +16,7 @@ const A="MzAxOTE1MzE=";
 let isAdmin=false;
 
 function activarAdmin(){
-  let p=prompt("...");
+  let p=prompt("Ingresa clave admin:");
   if(p===atob(A)){
     isAdmin=true;
     localStorage.setItem("owner",getUserId());
@@ -44,6 +45,15 @@ function openModal(){
     alert("No puedes publicar aquí");
     return;
   }
+
+  const placeholder={
+    general:"¿Qué quieres decir?",
+    profesores:"Opina sobre un profesor…",
+    experiencias:"Cuenta tu experiencia…",
+    quejas:"Describe la situación…"
+  };
+
+  document.getElementById("newMsg").placeholder=placeholder[currentChannel]||"¿Qué quieres decir?";
   document.getElementById("modal").classList.remove("hidden");
 }
 
@@ -82,7 +92,7 @@ async function addMessage(){
     likedBy:[],
     pinned:false,
     timestamp:Date.now(),
-    categoria:currentTab
+    categoria:currentTab==="ranking"?"general":currentChannel
   });
 
   lastTime=Date.now();
@@ -110,33 +120,25 @@ async function deleteMessage(id){
   await db.collection("mensajes").doc(id).delete();
 }
 
-// TAB PRINCIPAL
+// TAB
 function switchTab(tab){
   currentTab=tab;
   document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
-  document.querySelector(`#${tab}-tab`)?.classList.add("active");
+  if(tab!=="channels") document.querySelector(`#${tab}-tab`)?.classList.add("active");
   render();
 }
 
-// DROPDOWN CANALES
+// CHANNEL DROPDOWN
 function toggleChannels(){
   const dropdown = document.getElementById("channels-dropdown");
   dropdown.classList.toggle("show");
 }
 
+// SWITCH CHANNEL
 function switchChannel(channel){
-  currentTab = channel;
+  currentChannel=channel;
+  toggleChannels();
   render();
-  
-  document.getElementById("channels-dropdown").classList.remove("show");
-
-  const placeholders = {
-    general: "¿Qué quieres decir?",
-    profesores: "Opina sobre un profesor…",
-    experiencias: "Cuenta tu experiencia…",
-    quejas: "Describe la situación…"
-  };
-  document.getElementById("newMsg").placeholder = placeholders[channel] || "¿Qué quieres decir?";
 }
 
 // RENDER
@@ -148,22 +150,17 @@ function render(){
     c.innerHTML="";
     let arr=[];
     snap.forEach(d=>arr.push({id:d.id,...d.data()}));
-
     arr=arr.filter(m=>m.text.toLowerCase().includes(search));
 
     // INFO
     if(currentTab==="info"){
       c.innerHTML=`<div class="info-box">
-      🕶️ Whispr<br>
-      Plataforma digital enfocada en la expresión anónima dentro de comunidades.<br><br>
-      🎯 Misión<br>
-      Permitir que las personas compartan experiencias, opiniones y situaciones sin miedo.<br><br>
-      🔒 Privacidad<br>
-      No almacenamos identidad real. Sistema completamente anónimo.<br><br>
-      ⚖️ Normas<br>
-      No amenazas reales. No datos personales. No contenido ilegal.<br><br>
-      📌 Nota<br>
-      Whispr es una plataforma independiente creada con fines sociales y de expresión.
+        🕶️ Whispr<br>
+        Plataforma digital enfocada en la expresión anónima dentro de comunidades.<br><br>
+        🎯 <b>Misión</b>: Permitir que las personas compartan experiencias, opiniones y situaciones sin miedo.<br>
+        🔒 <b>Privacidad</b>: No almacenamos identidad real, sistema completamente anónimo.<br>
+        ⚖️ <b>Normas</b>: No amenazas reales, no datos personales, no contenido ilegal.<br>
+        📌 <b>Nota</b>: Whispr es una plataforma independiente creada con fines sociales y de expresión.
       </div>`;
       return;
     }
@@ -183,17 +180,13 @@ function render(){
       return;
     }
 
-    // FILTRO POR CANAL
+    // FILTRO POR CATEGORÍA
     if(currentTab!=="ranking"){
-      arr=arr.filter(m=>m.categoria===currentTab);
+      arr=arr.filter(m=>m.categoria===currentChannel);
     }
 
-    // TENDENCIAS
-    if(currentTab==="ranking"){
-      arr.sort((a,b)=>score(b)-score(a));
-    } else {
-      arr.sort((a,b)=>score(b)-score(a));
-    }
+    // ORDENAR POR SCORE
+    arr.sort((a,b)=>score(b)-score(a));
 
     arr.forEach(createMessage);
   });
@@ -212,7 +205,7 @@ function crearSeccion(titulo,data){
       <div class="fame-card ${i===0?"fame-top":""}">
         ${i===0?"👑":""}
         <div>${m.text}</div>
-        <div>${m.categoria ? `<span>${getCategoryBadge(m.categoria)}</span>` : ""}</div>
+        <div>${m.categoria?getCategoryBadge(m.categoria):''}</div>
         <div>❤️ ${m.likes}</div>
       </div>
     `;
@@ -222,12 +215,13 @@ function crearSeccion(titulo,data){
   return html;
 }
 
+// CATEGORY BADGE
 function getCategoryBadge(cat){
-  const map = {
-    general:"💬 General",
-    profesores:"👨‍🏫 Profesores",
-    experiencias:"🧠 Experiencias",
-    quejas:"⚠️ Quejas"
+  const map={
+    general:'💬 General',
+    profesores:'👨‍🏫 Profesores',
+    experiencias:'🧠 Experiencias',
+    quejas:'⚠️ Quejas'
   };
   return map[cat]||cat;
 }
@@ -237,14 +231,15 @@ function createMessage(m){
   let div=document.createElement("div");
   let isOwner=m.user===getOwner();
 
-  div.className="message "+(isOwner?"owner":"")+" "+(m.categoria||"");
+  div.className="message "+(isOwner?"owner":"")+" "+(m.categoria||"general");
 
   div.innerHTML=`
-    ${isOwner?`<span class="owner-name">👑 Owner</span><br>`:""}
-    ${m.text}<br>
-    <small>${timeAgo(m.timestamp)}</small><br>
-    <span>${m.categoria ? getCategoryBadge(m.categoria) : ""}</span><br>
-    ❤️ ${m.likes}<br>
+    ${isOwner?`<span class="owner-name">👑 Owner</span>`:""}
+    <br>${m.text}
+    <br><small>${timeAgo(m.timestamp)}</small>
+    <br><span>${getCategoryBadge(m.categoria)}</span>
+    <br>❤️ ${m.likes}
+    <br>
     <button onclick="like('${m.id}')">❤️</button>
     ${(m.user===getUserId()||isAdmin)?`<button onclick="deleteMessage('${m.id}')">🗑️</button>`:""}
   `;
