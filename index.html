@@ -14,12 +14,13 @@
 <div onclick="activarAdmin()" class="admin-btn">⚙</div>
 
 <div class="tabs">
-  <div id="tab-trending" class="tab active" onclick="switchTab('ranking')">🔥 Tendencias</div>
-  <div id="tab-channels" class="tab" onclick="toggleChannels()">📂 Canales ⬇</div>
-  <div id="tab-fame" class="tab" onclick="switchTab('fama')">🏆 Salón</div>
-  <div id="tab-info" class="tab" onclick="switchTab('info')">ℹ️ Info</div>
+  <div class="tab" onclick="switchTab('ranking')">🔥 Tendencias</div>
+  <div class="tab" id="tab-channels" onclick="toggleChannels()">📂 Canales ⬇</div>
+  <div class="tab" onclick="switchTab('fama')">🏆 Salón</div>
+  <div class="tab" onclick="switchTab('info')">ℹ️ Info</div>
 </div>
 
+<!-- DROPDOWN CANALES -->
 <div id="channelsDropdown" class="channels-dropdown">
   <div class="channel-item" onclick="switchCategory('general')">💬 General</div>
   <div class="channel-item" onclick="switchCategory('profesores')">👨‍🏫 Profesores</div>
