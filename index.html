@@ -14,17 +14,17 @@
 <div onclick="activarAdmin()" class="admin-btn">⚙</div>
 
 <div class="tabs">
-  <div class="tab active" onclick="switchTab('ranking')">🔥 Tendencias</div>
-  <div class="tab" id="channels-tab" onclick="toggleChannels()">📂 Canales ⬇</div>
-  <div class="tab" onclick="switchTab('fama')">🏆 Salón</div>
-  <div class="tab" onclick="switchTab('info')">ℹ️ Info</div>
+  <div class="tab" id="ranking-tab" onclick="switchTab('ranking')">🔥 Tendencias</div>
+  <div class="tab" id="channels-tab" onclick="switchTab('channels')">📂 Canales ⬇</div>
+  <div class="tab" id="fama-tab" onclick="switchTab('fama')">🏆 Salón</div>
+  <div class="tab" id="info-tab" onclick="switchTab('info')">ℹ️ Info</div>
 </div>
 
 <div id="channels-dropdown" class="channels-dropdown">
-  <div class="sub-tab" onclick="switchChannel('general')">💬 General</div>
-  <div class="sub-tab" onclick="switchChannel('profesores')">👨‍🏫 Profesores</div>
-  <div class="sub-tab" onclick="switchChannel('experiencias')">🧠 Experiencias</div>
-  <div class="sub-tab" onclick="switchChannel('quejas')">⚠️ Quejas</div>
+  <div class="channel-item" onclick="selectChannel('general')">💬 General</div>
+  <div class="channel-item" onclick="selectChannel('profesores')">👨‍🏫 Profesores</div>
+  <div class="channel-item" onclick="selectChannel('experiencias')">🧠 Experiencias</div>
+  <div class="channel-item" onclick="selectChannel('quejas')">⚠️ Quejas</div>
 </div>
 
 <div class="search-bar">
