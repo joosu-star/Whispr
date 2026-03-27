@@ -17,7 +17,6 @@ header{
   top:5px;
   right:10px;
   opacity:0.1;
-  cursor:pointer;
 }
 
 .tabs{
@@ -39,34 +38,6 @@ header{
   background:#6a00ff;
 }
 
-.channels-dropdown{
-  display:flex;
-  flex-direction:column;
-  background:#111;
-  margin:0 10px;
-  border-radius:15px;
-  overflow:hidden;
-  max-height:0;
-  transition:max-height 0.3s ease, opacity 0.3s ease;
-  opacity:0;
-}
-
-.channels-dropdown.show{
-  max-height:500px;
-  opacity:1;
-}
-
-.channel-item{
-  padding:10px;
-  cursor:pointer;
-  border-bottom:1px solid #222;
-  transition: background 0.2s;
-}
-
-.channel-item:hover{
-  background:#222;
-}
-
 .search-bar{
   padding:10px;
 }
@@ -85,14 +56,8 @@ header{
   padding:15px;
   background:#141414;
   border-radius:15px;
-  border:2px solid transparent;
-  transition: border 2s ease, background 1.5s ease;
+  transition: all 0.5s;
 }
-
-.message.general{border-color:#0066ff;}
-.message.profesores{border-color:#00ff66;}
-.message.experiencias{border-color:#9900ff;}
-.message.quejas{border-color:#ff3333;}
 
 .owner{
   border:1px solid #00c3ff;
@@ -172,18 +137,49 @@ textarea{
   border-radius:15px;
   padding:10px;
   text-align:center;
-  border:2px solid transparent;
 }
 
-.fame-card.fame-top{
+.fame-top{
   border:2px solid gold;
 }
 
-/* ANIMACION OLEAJE SUAVE */
-@keyframes oleaje{
-  0%{border-color: rgba(0,102,255,0.6);}
-  25%{border-color: rgba(0,102,255,0.2);}
-  50%{border-color: rgba(0,102,255,0.6);}
-  75%{border-color: rgba(0,102,255,0.2);}
-  100%{border-color: rgba(0,102,255,0.6);}
+/* DROPDOWN CANALES */
+.channels-dropdown{
+  flex-direction:column;
+  background:#111;
+  margin:0 10px;
+  border-radius:15px;
+  overflow:hidden;
+  transition: all 0.3s ease;
+  height:0;
+  opacity:0;
+  pointer-events:none;
+}
+
+.channels-dropdown.show{
+  height:auto;
+  opacity:1;
+  pointer-events:auto;
+}
+
+.channel-item{
+  padding:10px;
+  cursor:pointer;
+  border-bottom:1px solid #222;
+  transition: background 0.2s;
+}
+
+.channel-item:hover{
+  background:#222;
+}
+
+/* BORDES ANIMADOS POR CATEGORIA */
+.general .message{border:2px solid #3b82f6; animation: wave 3s infinite ease-in-out;}
+.profesores .message{border:2px solid #10b981; animation: wave 3s infinite ease-in-out;}
+.quejas .message{border:2px solid #ef4444; animation: wave 3s infinite ease-in-out;}
+.experiencias .message{border:2px solid #8b5cf6; animation: wave 3s infinite ease-in-out;}
+
+@keyframes wave{
+  0%,100%{box-shadow:0 0 10px rgba(255,255,255,0.1);}
+  50%{box-shadow:0 0 20px rgba(255,255,255,0.3);}
 }
