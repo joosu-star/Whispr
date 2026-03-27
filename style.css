@@ -3,7 +3,6 @@ body{
   font-family:'Segoe UI', sans-serif;
   background:linear-gradient(180deg,#0a0a0a,#050505);
   color:white;
-  transition: background 1.5s ease;
 }
 
 header{
@@ -32,42 +31,10 @@ header{
   border-radius:20px;
   background:#1a1a1a;
   cursor:pointer;
-  transition: background 0.3s;
 }
 
-.tab.active{
+.active{
   background:#6a00ff;
-}
-
-.dropdown-btn::after{
-  content: " ";
-}
-
-.channels-dropdown{
-  display:flex;
-  flex-direction:column;
-  background:#111;
-  margin:0 10px;
-  border-radius:10px;
-  overflow:hidden;
-  transition:max-height 0.3s ease, opacity 0.3s ease;
-  max-height:0;
-  opacity:0;
-}
-
-.channels-dropdown.show{
-  max-height:500px;
-  opacity:1;
-}
-
-.channel{
-  padding:10px;
-  cursor:pointer;
-  transition: background 0.2s;
-}
-
-.channel:hover{
-  background:#222;
 }
 
 .search-bar{
@@ -89,16 +56,7 @@ header{
   background:#141414;
   border-radius:15px;
   position:relative;
-  border:2px solid transparent;
-  transition: border 1.5s ease;
-}
-
-.message .category-badge{
-  font-size:12px;
-  font-weight:bold;
-  padding:2px 6px;
-  border-radius:12px;
-  margin-right:5px;
+  transition: background 1s ease;
 }
 
 .owner{
@@ -151,6 +109,7 @@ textarea{
   padding:10px;
 }
 
+/* INFO */
 .info-box{
   margin:15px;
   padding:15px;
@@ -185,15 +144,38 @@ textarea{
   border:2px solid gold;
 }
 
-/* Colores por canal */
-.channel-general{ border-color:#007bff; animation:wave 3s infinite alternate; }
-.channel-profesores{ border-color:#28a745; animation:wave 3s infinite alternate; }
-.channel-experiencias{ border-color:#6f42c1; animation:wave 3s infinite alternate; }
-.channel-quejas{ border-color:#dc3545; animation:wave 3s infinite alternate; }
-
-/* Animación oleaje borde */
-@keyframes wave{
-  0%{ box-shadow:0 0 10px 2px rgba(255,255,255,0.1);}
-  50%{ box-shadow:0 0 20px 5px rgba(255,255,255,0.2);}
-  100%{ box-shadow:0 0 10px 2px rgba(255,255,255,0.1);}
+/* DROPDOWN CANALES */
+.channels-dropdown{
+  overflow:hidden;
+  max-height:0;
+  opacity:0;
+  transition:max-height 0.3s ease, opacity 0.3s ease;
+  margin-bottom:10px;
 }
+
+.channels-dropdown.show{
+  max-height:500px;
+  opacity:1;
+}
+
+.sub-tab{
+  padding:8px 14px;
+  margin:3px 0;
+  border-radius:15px;
+  background:#1a1a1a;
+  cursor:pointer;
+  text-align:left;
+}
+
+/* BORDES ANIMADOS POR CANAL */
+@keyframes wave {
+  0% { box-shadow: 0 0 5px rgba(255,255,255,0.1); }
+  50% { box-shadow: 0 0 12px rgba(255,255,255,0.3); }
+  100% { box-shadow: 0 0 5px rgba(255,255,255,0.1); }
+}
+
+/* Colores canal */
+.message.general{ border:2px solid #0099ff; animation: wave 3s ease-in-out infinite; }
+.message.profesores{ border:2px solid #00ff99; animation: wave 3s ease-in-out infinite; }
+.message.experiencias{ border:2px solid #9900ff; animation: wave 3s ease-in-out infinite; }
+.message.quejas{ border:2px solid #ff3333; animation: wave 3s ease-in-out infinite; }
