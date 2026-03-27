@@ -9,15 +9,15 @@
 
 <body>
 
-<header>🕶️ Whispr</header>
+<header id="mainHeader">🕶️ Whispr</header>
 
 <div onclick="activarAdmin()" class="admin-btn">⚙</div>
 
 <div class="tabs">
-  <div class="tab" id="tab-trending" onclick="switchTab('ranking')">🔥 Tendencias</div>
-  <div class="tab" id="tab-channels" onclick="toggleChannels()">📂 Canales ⬇</div>
-  <div class="tab" id="tab-fame" onclick="switchTab('fama')">🏆 Salón</div>
-  <div class="tab" id="tab-info" onclick="switchTab('info')">ℹ️ Info</div>
+  <div class="tab" id="tabTrending" onclick="switchTab('ranking')">🔥 Tendencias</div>
+  <div class="tab" id="tabChannels" onclick="toggleChannels()">📂 Canales ⬇</div>
+  <div class="tab" id="tabFame" onclick="switchTab('fama')">🏆 Salón</div>
+  <div class="tab" id="tabInfo" onclick="switchTab('info')">ℹ️ Info</div>
 </div>
 
 <div id="channelsDropdown" class="channels-dropdown hidden">
@@ -31,7 +31,7 @@
   <input id="searchInput" placeholder="Buscar..." oninput="render()">
 </div>
 
-<div id="currentChannelName" class="current-channel-name"></div>
+<div id="currentChannelLabel" class="channel-label">💬 General</div>
 
 <div id="content"></div>
 
